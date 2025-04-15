@@ -23,5 +23,5 @@ You can install anevah from GitHub with:
 if (!requireNamespace('remotes', quietly = TRUE) {
   install.packages('remotes')
 }
-remotes::install_github('PejLab/anevah', build_vignettes = TRUE)
+remotes::install_github('PejLab/ANEVAh_repo', build_vignettes = TRUE)
 ```
