@@ -1,0 +1,28 @@
+Package: anevah
+Type: Package
+Title: Haplotype-Based ANEVA (ANEVAh)
+Version: 0.1.0
+Authors@R: c(
+  person(given = "Eric", family = "Song", email = "ejsong@ucsd.edu", role = c("aut", "cre")),
+  person(given = "Paul", family = "Hoffman", email = "phoffman@nygenome.org", role = "aut", comment = c(ORCID = "0000-0002-7693-8957"))
+  )
+Description: A toolkit for quantifying genetic variation in gene dosage from
+    allelic expression (AE) data. anevah implements the ANEVA method for
+    haplotype-based AE data generated from phASER.
+URL: https://github.com/PejLab/ANEVAh_repo
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Remotes: PejLab/bln
+Imports:
+  bln,
+  pracma,
+  stats
+Suggests:
+    argparser,
+    data.table,
+    knitr,
+    nomnoml,
+    rmarkdown
+VignetteBuilder: knitr

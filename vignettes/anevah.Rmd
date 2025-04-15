@@ -1,0 +1,106 @@
+---
+title: "Generating Vg Estimates using Haplotype-Based ANEVA"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Generating Vg Estimates using Haplotype-Based ANEVA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{css, echo=FALSE}
+.pychunk {
+background-color: #faebc0;
+}
+.rchunk {
+background-color: lightgrey;
+}
+.bashchunk {
+background-color: #c8defa
+}
+```
+
+```{r setup, include=FALSE, class.source="rchunk"}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  tidy = TRUE,
+  comment = "#>",
+  fig.width = 7
+)
+```
+
+```{r nomnoml, include=FALSE, class.source="rchunk"}
+library(nomnoml)
+webshot::install_phantomjs()
+```
+
+## Generating Haplotype-Based Allelic Data
+
+Haplotype-based allelic expression data can be generated using [phASER][phaser]. The overall phASER workflow is as follows:
+
+```{nomnoml phaser, echo=FALSE, svg=TRUE}
+#.indata: fill=springgreen visual=input
+#.outdata: fill=tomato visual=roundrect
+#.inter: fill=thistle visual=roundrect dashed
+#.prog: fill=goldenrod bold
+
+[<indata> RNA-seq Data] -> [<prog>phASER]
+[<indata> WGS Data] -> [phASER]
+[phASER] -> [<inter> counts]
+[counts] -> [<prog>phASER Gene AE]
+[phASER Gene AE] -> [<outdata> ASE]
+```
+
+The Lappalainen Lab provides a Docker image and WDL workflow to help install and run phASER. Links to phASER resources are provided below
+
+- [phASER Homepage][phaser]
+- [phASER Docker Image][phpkg]
+- [phASER WDL Workflow][phwflw]
+
+## Assembling the Inputs
+
+A helper R script `assemble_phaser.R` is provided with {anevah} to assemble the results of a phASER run to be accepted as input for {anevah}; it takes a directory with results from a phASER run as input and outputs two files: a table of reference counts and table of alternate counts
+
+```{bash, class.source="bashchunk"}
+RSCRIPT=$(Rscript -e "cat(system.file('exec', 'assemble_phaser.R', package='anevah', mustWork=TRUE))")
+echo ${RSCRIPT}
+```
+
+```{bash, class.source="bashchunk", eval=FALSE}
+Rscript ${RSCRIPT}
+```
+
+```{r, echo=FALSE, error=FALSE, warning=FALSE, class.source="bashchunk"}
+f <- system.file("exec", "assemble_phaser.R", package = "anevah", mustWork = TRUE)
+x <- system2(command = f, stderr = TRUE)
+cat(paste(x, collapse = "\n"))
+```
+
+## Running ANEVA-H
+
+{anevah} provides the function `anevah::anevah` to calculate Vg estimates. It takes two data frames as input:
+
+- A data frame of reference counts
+- A data frame of alternate counts
+
+If you use the `assemble_phaser.R` script as described [above](#assembling-the-inputs), these tables can be read in as follows:
+
+```{r, eval=FALSE}
+ref_counts <- read.delim(
+  "phaser_assembled_ref_counts.tsv",
+  header = TRUE,
+  row.names = 1,
+  as.is = TRUE
+)
+alt_counts <- read.delim(
+  "phaser_assembled_alt_counts.tsv",
+  header = TRUE,
+  row.names = 1,
+  as.is = TRUE
+)
+```
+
+`anevah::anevah` returns a two-column data frame with the gene ID and Vg estimate
+
+[phaser]: https://github.com/secastel/phaser
+[phwflw]: https://github.com/LappalainenLab/workflows/tree/master/phaser
+[phpkg]: https://github.com/orgs/LappalainenLab/packages/container/package/phaser
