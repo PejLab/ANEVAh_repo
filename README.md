@@ -7,7 +7,9 @@
 
 #### Haplotype-Based ANEVA
 
-Created by [Eric Song](esong@ucsd.edu) [Paul Hoffman](phoffman@nygenome.org) A toolkit for quantifying genetic variation in gene dosage from allelic
+Package authored by [Eric Song](mailto:esong@ucsd.edu) and [Paul Hoffman](mailto:phoffman@nygenome.org) based on the statistical model by [Pejman Mohammadi](pejman.m@gmail.com).
+
+A toolkit for quantifying genetic variation in gene dosage from allelic
 expression (AE) data. anevah implements the ANEVA method for haplotype-based AE data generated from phASER. 
 
 A tutorial for generating Vg estimates from raw data can be found with
