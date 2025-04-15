@@ -12,9 +12,6 @@ Package authored by [Eric Song](mailto:esong@ucsd.edu) and [Paul Hoffman](mailto
 A toolkit for quantifying genetic variation in gene dosage from allelic
 expression (AE) data. anevah implements the ANEVA method for haplotype-based AE data generated from phASER. 
 
-A tutorial for generating Vg estimates from raw data can be found with
-`vignette("anevah")`
-
 ## Installation
 
 You can install anevah from GitHub with:
@@ -23,5 +20,5 @@ You can install anevah from GitHub with:
 if (!requireNamespace('remotes', quietly = TRUE) {
   install.packages('remotes')
 }
-remotes::install_github('PejLab/ANEVAh_repo', build_vignettes = TRUE)
+remotes::install_github('PejLab/ANEVAh_repo')
 ```
